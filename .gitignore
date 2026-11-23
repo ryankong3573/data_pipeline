@@ -1,0 +1,9 @@
+# secrets
+.env
+rsa_key.p8
+
+# Python
+__pycache__/
+*.pyc
+venv/
+.venv/

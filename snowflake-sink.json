@@ -1,0 +1,23 @@
+{
+  "name": "snowflake-sink",
+  "config": {
+    "connector.class": "com.snowflake.kafka.connector.SnowflakeStreamingSinkConnector",
+    "tasks.max": "1",
+    "topics": "btc_ohlc",
+    "snowflake.topic2table.map": "btc_ohlc:RAW_DATA",
+
+    "snowflake.url.name": "${env:SNOWFLAKE_URL}",
+    "snowflake.user.name": "KAFKA_CONNECTOR_USER",
+    "snowflake.private.key": "${env:SNOWFLAKE_PRIVATE_KEY}",
+    "snowflake.role.name": "KAFKA_CONNECTOR_ROLE",
+    "snowflake.database.name": "BTC_USD",
+    "snowflake.schema.name": "RAW",
+
+
+    "snowflake.streaming.validate.compatibility.with.classic": "false",
+    "snowflake.enable.schematization": "true",
+    "key.converter": "org.apache.kafka.connect.storage.StringConverter",
+    "value.converter": "org.apache.kafka.connect.json.JsonConverter",
+    "value.converter.schemas.enable": "false"
+  }
+}
