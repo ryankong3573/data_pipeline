@@ -3,14 +3,14 @@
   "config": {
     "connector.class": "com.snowflake.kafka.connector.SnowflakeStreamingSinkConnector",
     "tasks.max": "1",
-    "topics": "btc_ohlc",
-    "snowflake.topic2table.map": "btc_ohlc:RAW_DATA",
+    "topics": "btc_ohlc,eth_ohlc",
+    "snowflake.topic2table.map": "btc_ohlc:BTC_DATA,eth_ohlc:ETH_DATA",
 
     "snowflake.url.name": "${env:SNOWFLAKE_URL}",
     "snowflake.user.name": "KAFKA_CONNECTOR_USER",
     "snowflake.private.key": "${env:SNOWFLAKE_PRIVATE_KEY}",
     "snowflake.role.name": "KAFKA_CONNECTOR_ROLE",
-    "snowflake.database.name": "BTC_USD",
+    "snowflake.database.name": "CRYPTO_DB",
     "snowflake.schema.name": "RAW",
 
 
