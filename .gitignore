@@ -1,6 +1,7 @@
 # secrets
 .env
 rsa_key.p8
+dbt_key.p8
 
 # Python
 __pycache__/
