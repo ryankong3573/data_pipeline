@@ -2,8 +2,11 @@ services:
   kafka:
     image: apache/kafka:latest
     container_name: kafka
+    restart: unless-stopped
     ports:
       - "9092:9092"
+    volumes:
+      - kafka-data:/var/lib/kafka/data
     environment:
       KAFKA_NODE_ID: 1
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: 'CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT'
@@ -20,13 +23,14 @@ services:
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
       KAFKA_SHARE_COORDINATOR_STATE_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_SHARE_COORDINATOR_STATE_TOPIC_MIN_ISR: 1
-      KAFKA_LOG_DIRS: '/tmp/kraft-combined-logs'
+      KAFKA_LOG_DIRS: '/var/lib/kafka/data'
 
   connect:
       image: confluentinc/cp-kafka-connect:7.9.0
       container_name: kafka-connect
       depends_on:
         - kafka
+      restart: unless-stopped
       ports:
         - "8083:8083"
       environment:
@@ -54,3 +58,13 @@ services:
         -  |
           confluent-hub install --no-prompt snowflakeinc/snowflake-kafka-connector:latest
           /etc/confluent/docker/run
+  producer:
+    build: .
+    container_name: producer
+    depends_on:
+      - kafka
+    restart: unless-stopped
+
+
+volumes:
+  kafka-data:

@@ -14,12 +14,13 @@ SUBSCRIPTION = {
         "channel": "ohlc",
         "symbol": [
             "BTC/USD",
+            "ETH/USD"
         ],
         "interval": 1
     }
 }
 
-producer = Producer({"bootstrap.servers":"localhost:9092"})
+producer = Producer({"bootstrap.servers":"kafka:19092"})
 
 
 async def main():
@@ -30,16 +31,25 @@ async def main():
                     await ws.send(json.dumps(SUBSCRIPTION))
                     print("Connected")
 
-                    last = None
+                    last_btc = None
+                    last_eth = None
+
                     while True:
                         msg = await ws.recv()
                         raw_data = json.loads(msg)
 
                         if raw_data.get("channel") == "ohlc":
-                            for data in raw_data["data"]:
-                                if last is not None and data["interval_begin"] != last["interval_begin"]:
-                                    producer.produce("btc_ohlc", value=json.dumps(data))
-                                last = data
+                            for data in raw_data['data']:
+                                if data["symbol"] == "BTC/USD":
+                                    if last_btc is not None and data["interval_begin"] != last_btc["interval_begin"]:
+                                        producer.produce("btc_ohlc",value=json.dumps(last_btc))
+                                    last_btc = data
+
+                                else:
+                                    if last_eth is not None and data["interval_begin"] != last_eth['interval_begin']:
+                                        producer.produce("eth_ohlc",value=json.dumps(last_eth))
+                                    last_eth = data
+
 
             except ConnectionClosedError as e:
                 print(e)
@@ -47,9 +57,6 @@ async def main():
     finally:
         print('hi')
         producer.flush()
-
-            
-
 
 if __name__ == "__main__":
     asyncio.run(main())
