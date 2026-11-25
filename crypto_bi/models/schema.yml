@@ -1,0 +1,31 @@
+version: 2
+
+models:
+  - name: stg_btc
+    columns:
+      - name: SYMBOL
+        tests: [not_null]
+      - name: OPEN
+        quote: true
+        tests: [not_null]
+      - name: HIGH
+        tests: [not_null]
+      - name: LOW
+        tests: [not_null]
+      - name: CLOSE
+        quote: true
+        tests: [not_null]
+      - name: TRADES
+        tests: [not_null]
+      - name: VOLUME
+        tests: [not_null]
+      - name: VWAP
+        tests: [not_null]
+      - name: INTERVAL_BEGIN
+        tests: [not_null, unique]
+      - name: INTERVAL
+        quote: true
+        tests: [not_null]
+      - name: TIMESTAMP
+        quote: true
+        tests: [not_null]
