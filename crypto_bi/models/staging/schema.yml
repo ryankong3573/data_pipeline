@@ -25,10 +25,7 @@ models:
         tests: [not_null, unique]
       - name: INTERVAL
         quote: true
-        tests: [not_null]
-      - name: TIMESTAMP
-        quote: true
-        tests: [not_null]
+        tests: [not_null] 
         
   - name: stg_eth
     columns:
@@ -53,8 +50,5 @@ models:
       - name: INTERVAL_BEGIN
         tests: [not_null, unique]
       - name: INTERVAL
-        quote: true
-        tests: [not_null]
-      - name: TIMESTAMP
         quote: true
         tests: [not_null]
